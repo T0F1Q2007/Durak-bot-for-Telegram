@@ -8,18 +8,16 @@ tofiq = "Tofiq"
 group = [naila,djemil,rasim,tofiq]
 
 cards = [
-  ["red","black"],
-  ["♡", "♤", "♧", "◇"],
+  ["❤","♦️","♠️","♣️"],
   [6,7,8,9,10,"B","D","K","T"]
   ]
 
 used_cards = []
 
 def give_random():
-  color = random.choice(cards[0])
-  figure = random.choice(cards[1])
-  name = random.choice(cards[2])
-  card = f"{color} {figure} {name}"
+  figure = random.choice(cards[0])
+  name = random.choice(cards[1])
+  card = f"{figure} {name}"
   if card not in used_cards:
     used_cards.append(card)
     return card
@@ -114,6 +112,47 @@ for i in range(0,len(playersCs)):
 print(f"{group[smallest_user[1]]} starts")
 
 #4.Starter player puts a card for a player that is next to him/her from a custom list, yeni saat eqrebi istiqametinde deyil
-player_turn = random.shuffle(group)
+player_turn = [naila,djemil,rasim,tofiq]
+random.shuffle(player_turn)
+starter_turn = player_turn.index(group[smallest_user[1]])
 
+print(player_turn,"\n",starter_turn)
+first_play = True
+
+def gameplay(starter_turn: int, first_play: bool):
+  if first_play:
+    if group[smallest_user[1]]=="Tofiq":
+      selected_card = int(input("Select a card to start: "))
+      playersCs[smallest_user[1]].remove(playersCs[smallest_user[1]][selected_card])
+      print(f"Selected card: {playersCs[smallest_user[1]][int(selected_card)-1]}")
+    else:
+      bot_choice = random.choice(playersCs[smallest_user[1]])
+      playersCs[smallest_user[1]].remove(bot_choice)
+      print(f"{group[smallest_user[1]]} played {bot_choice}")
+    first_play = False
+  else:
+    if player_turn[starter_turn]=="Tofiq":
+      print('  '.join(playersCs[group.index("Tofiq")]))
+      print("\n")
+      selected_card = input("Select a card: ")
+      selected_card = int(selected_card)-2
+      playersCs[3].remove(playersCs[3][selected_card])
+      print(f"Tofiq's played: {playersCs[3][selected_card]}")
+    else:
+      print(f"It's {player_turn[starter_turn]}'s turn.")
+      bot_choice = random.choice(playersCs[group.index(player_turn[starter_turn])])
+      playersCs[group.index(player_turn[starter_turn])].remove(bot_choice)
+      print(f"{player_turn[starter_turn]}'s played: {bot_choice}")
+  starter_turn+=1
+  print(starter_turn)
+  if starter_turn>=4:
+    if starter_turn%4==0:
+      starter_turn=0
+    else:
+      starter_turn-=4
+  return starter_turn, first_play
+
+while [] not in playersCs:
+  starter_turn, first_play = gameplay(starter_turn, first_play)
+print(f"{group[playersCs.index([])]} won the game.")
 #Made by Tofiq
