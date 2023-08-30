@@ -1,4 +1,5 @@
 import random
+import time
 
 naila = "Naila"
 djemil = "Cemil"
@@ -123,8 +124,12 @@ def gameplay(starter_turn: int, first_play: bool):
   if first_play:
     if group[smallest_user[1]]=="Tofiq":
       selected_card = int(input("Select a card to start: "))
-      playersCs[smallest_user[1]].remove(playersCs[smallest_user[1]][selected_card])
-      print(f"Selected card: {playersCs[smallest_user[1]][int(selected_card)-1]}")
+      selected_card -= 1
+      print(f"Selected card: {playersCs[smallest_user[1]][int(selected_card)]}")
+      playersCs[3].pop(selected_card)
+      selected_card_2 = list(playersCs[3][selected_card])
+      #if selected_card_2[0] in playersCs[starter_turn+1]:
+
     else:
       bot_choice = random.choice(playersCs[smallest_user[1]])
       playersCs[smallest_user[1]].remove(bot_choice)
@@ -135,21 +140,22 @@ def gameplay(starter_turn: int, first_play: bool):
       print('  '.join(playersCs[group.index("Tofiq")]))
       print("\n")
       selected_card = input("Select a card: ")
-      selected_card = int(selected_card)-2
-      playersCs[3].remove(playersCs[3][selected_card])
+      selected_card = int(selected_card)-1
       print(f"Tofiq's played: {playersCs[3][selected_card]}")
+      playersCs[3].pop(selected_card)
     else:
       print(f"It's {player_turn[starter_turn]}'s turn.")
       bot_choice = random.choice(playersCs[group.index(player_turn[starter_turn])])
       playersCs[group.index(player_turn[starter_turn])].remove(bot_choice)
       print(f"{player_turn[starter_turn]}'s played: {bot_choice}")
   starter_turn+=1
-  print(starter_turn)
   if starter_turn>=4:
     if starter_turn%4==0:
       starter_turn=0
     else:
       starter_turn-=4
+  time.sleep(1)
+  print("\n")
   return starter_turn, first_play
 
 while [] not in playersCs:
